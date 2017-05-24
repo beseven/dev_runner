@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+
+  web-app-test:
+    build:
+      context: ${CODE_DIR}/connecting-to-services/
+      args:
+        NODE_ENV: development
+    command: sh -c 'npm run git-hook && npm run watch-test'
+    environment:
+      COVERALLS_REPO_TOKEN: ${COVERALLS_REPO_TOKEN}
+    volumes:
+      - ${CODE_DIR}/connecting-to-services/:/code
+      - app-test-deps:/code/node_modules
+
+  api-test:
+    build:
+      context: ${CODE_DIR}/nearby-services-api/
+      args:
+        NODE_ENV: development
+    command: sh -c 'npm run git-hook && npm run snyk-test && npm run watch-test'
+    environment:
+      SNYK_TOKEN: ${SNYK_TOKEN}
+      COVERALLS_REPO_TOKEN: ${COVERALLS_REPO_TOKEN}
+    volumes:
+      - ${CODE_DIR}/nearby-services-api/:/code
+      - api-test-deps:/code/node_modules
+    links:
+      - mongodb-pharmacy-test:mongo
+
+  mongodb-pharmacy-test:
+    build:
+      context: ${CODE_DIR}/docker-mongodb-pharmacy/
+
+volumes:
+  app-test-deps:
+  api-test-deps:
+

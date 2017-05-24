@@ -1,0 +1,39 @@
+# ./scripts/start-gp-finder
+version: '2.1'
+
+services:
+
+  base-app:
+    build:
+      context: ${CODE_DIR}/profiles/
+      args:
+        NODE_ENV: development
+    command: yarn run start-watch
+    volumes:
+      - ${CODE_DIR}/profiles/:/code
+    environment:
+      NODE_ENV: ${NODE_ENV-development}
+      SPLUNK_HEC_TOKEN: ${SPLUNK_HEC_TOKEN}
+      SPLUNK_HEC_ENDPOINT: ${SPLUNK_HEC_ENDPOINT-https://splunk-collector.cloudapp.net:8088}
+      WEBTRENDS_ANALYTICS_TRACKING_ID: ${WEBTRENDS_ANALYTICS_TRACKING_ID}
+      GOOGLE_ANALYTICS_TRACKING_ID: ${GOOGLE_ANALYTICS_TRACKING_ID}
+      HOTJAR_ANALYTICS_TRACKING_ID: ${HOTJAR_ANALYTICS_TRACKING_ID}
+
+  profiles-frontend:
+    extends:
+      service: base-app
+    links:
+      - profiles-db:mongo
+    ports:
+      - 3000:3000
+    volumes:
+      - profiles-node_modules:/code/node_modules
+
+  profiles-db:
+    build:
+      context: ${CODE_DIR}/profiles-db/
+    ports:
+      - 27017:27017
+
+volumes:
+  profiles-node_modules:

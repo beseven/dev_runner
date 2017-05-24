@@ -1,0 +1,54 @@
+version: '2'
+
+services:
+
+  c2s-frontend:
+    # image: "nhsuk/connecting-to-services:master"
+    build:
+      context: ${CODE_DIR}/connecting-to-services/
+      args:
+        NODE_ENV: ${NODE_ENV}
+    command: npm run watch-dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ${CODE_DIR}/connecting-to-services/:/code
+      - app-deps:/code/node_modules
+    environment:
+      WEBTRENDS_ANALYTICS_TRACKING_ID: ${WEBTRENDS_ANALYTICS_TRACKING_ID}
+      NODE_ENV: ${NODE_ENV}
+      API_BASE_URL: http://nearby-services-api:3001
+      GOOGLE_ANALYTICS_TRACKING_ID: ${GOOGLE_ANALYTICS_TRACKING_ID}
+      HOTJAR_ANALYTICS_TRACKING_ID: ${HOTJAR_ANALYTICS_TRACKING_ID}
+      SPLUNK_HEC_TOKEN: ${SPLUNK_HEC_TOKEN}
+      SPLUNK_HEC_ENDPOINT: ${SPLUNK_HEC_ENDPOINT}
+    links:
+    - nearby-services-api:nearby-services-api
+
+  nearby-services-api:
+    # image: "nhsuk/nearby-services-api:master"
+    build:
+      context: ${CODE_DIR}/nearby-services-api/
+      args:
+        NODE_ENV: ${NODE_ENV}
+    command: npm run watch-dev
+    volumes:
+      - ${CODE_DIR}/nearby-services-api/:/code
+      - api-deps:/code/node_modules
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      SPLUNK_HEC_ENDPOINT: ${SPLUNK_HEC_ENDPOINT}
+      SPLUNK_HEC_TOKEN: ${SPLUNK_HEC_TOKEN}
+    links:
+      - mongodb-pharmacy:mongo
+
+  mongodb-pharmacy:
+    build:
+      context: ${CODE_DIR}/docker-mongodb-pharmacy/
+    ports:
+      - 27017:27017
+
+volumes:
+  app-deps:
+  api-deps:
+
