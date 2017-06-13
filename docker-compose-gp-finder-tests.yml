@@ -7,20 +7,20 @@ services:
     extends:
       file: docker-compose-gp-finder.yml
       service: base-app
-    command: sh -c "yarn run git-hook && yarn run watch-test"
+    command: sh -c "yarn run git-hook && ${CODE_DIR}/gp-finder/scripts/container-tests"
     volumes:
       - gp-finder-tests-node_modules:/code/node_modules
     environment:
       NODE_ENV: test
+    user: root
     links:
-      - gp-finder-db:mongo
+      - gp-finder-db:es
 
   travis-tests:
     extends:
       file: docker-compose-gp-finder.yml
       service: base-app
-    command:
-      sh -c "npm run git-hook && npm run upload-coverage-coveralls"
+    command: sh ${CODE_DIR}/gp-finder/container-travis-tests
     volumes:
       - gp-finder-travis-tests-node_modules:/code/node_modules
     environment:
@@ -31,12 +31,13 @@ services:
       TRAVIS_BRANCH: ${TRAVIS_BRANCH}
       TRAVIS_COMMIT: ${TRAVIS_COMMIT}
       TRAVIS_JOB_ID: ${TRAVIS_JOB_ID}
+    user: root
     links:
-      - gp-finder-db:mongo
+      - gp-finder-db:es
 
   gp-finder-db:
     build:
-      context: ${CODE_DIR}/profiles-db/
+      context: ${CODE_DIR}/profiles-db-elastic/
 
 volumes:
   gp-finder-tests-node_modules:
