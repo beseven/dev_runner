@@ -2,9 +2,13 @@
 
 The scripts in these folder are meant to help the user/contributor to get up and running with the application fast.
 
-[`start-gp-finder`](start) - will start the GP Finder & Profiles DB the application in dev mode: `http://localhost:3000`
+[`start-gp-finder`](start) - will start the GP Finder & Profiles DB ES the application in dev mode: `http://localhost:3000`
 
-[`test-gp-finder`](test) - will continually run the tests on the GP Finder app using the Profiles DB
+[`test-gp-finder`](test) - will continually run the tests on the GP Finder app using the Profiles DB ES
+
+[`start-profiles`](start) - will start the Profiles & Profiles DB the application in dev mode: `http://localhost:3000`
+
+[`test-profiles`](test) - will continually run the tests on the Profiles app using the Profiles DB
 
 [`start-c2s`](start) - will start the C2S & nearby-services-api & Services DB the application in dev mode: `http://localhost:3000`
 

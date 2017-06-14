@@ -1,35 +1,36 @@
-# C2S docker-compose file for local development
-
-The `docker-compose.yml` will setup a local development environment where the code is sourced from the local machine and is set to reload on file changes.
+# Docker-compose files for local development for C2S repos
 
 ## Pre-requisites:
 
 * Clone all dependent service repos into `~/code`
   * `cd ~/code && git clone https://github.com/nhsuk/connecting-to-services.git`
   * `cd ~/code && git clone https://github.com/nhsuk/nearby-services-api.git`
+  * `cd ~/code && git clone https://github.com/nhsuk/pharmacy-db.git`
+  * `cd ~/code && git clone https://github.com/nhsuk/profiles.git`
+  * `cd ~/code && git clone https://github.com/nhsuk/profiles-db.git`
+  * `cd ~/code && git clone https://github.com/nhsuk/gp-finder.git`
+  * `cd ~/code && git clone https://github.com/nhsuk/profiles-db-elastic.git`
 
+* Create an .env file based on the .env_sample
 
 ## Steps for local development:
 
-1. Clone this repo locally `cd ~/code && git clone https://github.com/nhsuk/nhsuk-rancher-templates.git`
-1. Change working directory `cd nhsuk-rancher-templates/templates/c2s_local_dev/`
-1. Run `docker-compose up --build --force-recreate`. This will bring up your "stack" with port 3000 exposed locally. The `--build` and `--force-recreate` will ensure you always start the stack from scratch. NOTE: Any environment variables that do not have default values will need to be added to the `.env` file or set on the command line. e.g. `${SPLUNK_HEC_TOKEN}`. If environment variable have setting that are not as required they can be changed in the `.env` file to the appropriate value.
-1. To stop the "stack" run `docker-compose stop`
+Use scripts to run the development environment as well as the tests for each of the applications from [scripts](scripts/README.md)
 
-## Use existing images
+## Optional tools for debugging:
 
-If there is no need to create the Docker image locally and an existing image is needed. The line specifying the `image` can be uncommented.
+* For the Profiles and Pharmacy Finder stack when using MongoDB, you can use [Robomongo](https://robomongo.org/) 
 
+* For the GP Finder an alternative to using `curl` for ES config, querying and also for visualisation is [kibana](https://www.elastic.co/products/kibana).
+  For the latest version go [here](https://www.elastic.co/guide/en/kibana/current/install.html) or your OS package manager. 
 
-## Run test services in a container
+Troubleshooting ES:
+* In case you have any issues of compatibility, please check [here](https://www.elastic.co/support/matrix#show_compatibility).
 
-In order to run test services such as unit tests, performance tests, integration tests, etc. another compose file has been created to combine them into a single file. The benefit is to simplify the individual compose files and to keep the log output clearer and more focused on the services that are being run by that compose. 
-Create an env.sh file with your secrets/locals based on the .env-sample.sh
-Run `source env.sh; docker-compose -f docker-compose-tests.yml up --build --force-recreate` to start up the test service container.
-
-## FAQ
-
-1. When I run `docker-compose` I get errors about packages missing. Often it seems to be Nodemon.
-  * This could well be because the volume used by the service has previously been mounted when `NODE_ENV` was set to `production`. Try running `docker-compose down -v` which removes all the things created by the `docker-compose up` command, including volumes (with the `-v` flag). For test, run `docker-compose -f docker-compose-tests.yml down -v`
-
-
+Quickstart ES: 
+* On first use please remember the default port for ES is `9200` and the default index is `profiles`. [Here](https://www.youtube.com/watch?v=mMhnGjp8oOI) is a comprehensive intro.
+* The examples for the `Dev Tools` tab are the same as the ones using [`curl`](https://github.com/nhsuk/profiles-db-elastic#full-text-search-example)
+* Example query for the `Discover` tab when you choose the `"name", "alternativeName", "address.addressLines", "address.postcode", "doctors"` as the source:
+```
+{"bool": {"must": {"multi_match": {"query": "Beech House Surgery", "fields":["name^2","alternativeName"], "operator":"and"}}, "should": [{"match_phrase": {"name": {"query": "Beech House Surgery", "boost":2}}}]}}
+```
