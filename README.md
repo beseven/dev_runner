@@ -19,7 +19,7 @@ Use scripts to run the development environment as well as the tests for each of 
 
 ## Optional tools for debugging:
 
-* For the Profiles and Pharmacy Finder stack when using MongoDB, you can use [Robomongo](https://robomongo.org/) 
+* For the Profiles and Pharmacy Finder stack when using MongoDB, you can use [Robomongo](https://robomongo.org/) for visualising the info.
 
 * For the GP Finder an alternative to using `curl` for ES config, querying and also for visualisation is [kibana](https://www.elastic.co/products/kibana).
   For the latest version go [here](https://www.elastic.co/guide/en/kibana/current/install.html) or your OS package manager. 
