@@ -1,3 +1,3 @@
 #!/bin/bash
-docker-compose down -v
-docker-compose up --build --force-recreate
+docker-compose -p c2s-int -f docker-compose-c2s.yml down -v
+docker-compose -p c2s-int -f docker-compose-c2s.yml up --build --force-recreate

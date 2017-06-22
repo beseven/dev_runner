@@ -1,5 +1,5 @@
 #!/bin/bash
 # -p flag stands for --project-name and will create a different network for the test container
 # so it won't interfere with the app container
-docker-compose -p gp-finder-test -f docker-compose-tests.yml down -v
-docker-compose -p gp-finder-test -f docker-compose-tests.yml up --build --force-recreate tests
+docker-compose -p c2s-test -f docker-compose-c2s-tests.yml down -v
+docker-compose -p c2s-test -f docker-compose-c2s-tests.yml up --build --force-recreate tests

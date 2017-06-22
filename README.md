@@ -19,7 +19,7 @@ Use scripts to run the development environment as well as the tests for each of 
 
 ## Optional tools for debugging:
 
-* For the Profiles and Pharmacy Finder stack when using MongoDB, you can use [Robomongo](https://robomongo.org/) for visualising the info.
+* For the Profiles and Pharmacy Finder stack when using MongoDB, you can use [Robomongo](https://robomongo.org/) a free GUI client for visualising the info. Connect to the MongoDB instance from a MongoDB client on `localhost:27017`.
 
 * For the GP Finder an alternative to using `curl` for ES config, querying and also for visualisation is [kibana](https://www.elastic.co/products/kibana).
   For the latest version go [here](https://www.elastic.co/guide/en/kibana/current/install.html) or your OS package manager. 
@@ -34,3 +34,5 @@ Quickstart ES:
 ```
 {"bool": {"must": {"multi_match": {"query": "Beech House Surgery", "fields":["name^2","alternativeName"], "operator":"and"}}, "should": [{"match_phrase": {"name": {"query": "Beech House Surgery", "boost":2}}}]}}
 ```
+
+
