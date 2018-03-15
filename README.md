@@ -23,7 +23,7 @@ Use scripts to run the development environment as well as the tests for each of 
 
 * For the GP Finder an alternative to using `curl` for ES config, querying and also for visualisation is [kibana](https://www.elastic.co/products/kibana).
   For the latest version go [here](https://www.elastic.co/guide/en/kibana/current/install.html) or your OS package manager. 
-  You can also use the docker version of [kibana] https://www.elastic.co/guide/en/kibana/current/_configuring_kibana_on_docker.html#docker-env-config
+  You can also use the docker version of [kibana](https://www.elastic.co/guide/en/kibana/current/_configuring_kibana_on_docker.html#docker-env-config)
 
 Troubleshooting ES:
 * In case you have any issues of compatibility, please check [here](https://www.elastic.co/support/matrix#show_compatibility).
