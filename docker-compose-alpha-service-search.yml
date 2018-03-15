@@ -1,0 +1,13 @@
+# ./scripts/start-alpha-service-search
+version: '2.1'
+
+services:
+
+  alpha-service-finder:
+    image: "nhsuk/alpha-service-search-tools"
+    command: sh -c 'bundle && bundle exec rails s'
+    ports:
+      - 3000:3000
+    environment:
+      API_URL: hscds-s-orgapi.cloudapp.net:9843
+      API_KEY: 377D1724-032E-4544-A5ED-FB296C7960D3

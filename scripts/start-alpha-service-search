@@ -1,0 +1,4 @@
+#!/bin/bash
+docker-compose -p alpha-service-search-int -f docker-compose-alpha-service-search.yml down -v
+docker-compose -p alpha-service-search-int -f docker-compose-alpha-service-search.yml up --build --force-recreate
+

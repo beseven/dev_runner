@@ -1,0 +1,29 @@
+version: '2.2'
+
+services:
+  elasticsearch-db:
+    image: "nhsuk/elasticsearch-updater-snapshot:${elasticsearch_updater_snapshot_docker_image_tag-20180308}"
+    environment:
+      - 'xpack.security.enabled=false'
+    ports:
+      - 9200:9200
+    networks:
+      - myelastic
+
+  kibana:
+    image: kibana-test
+    build:
+      context: ./kibana
+    ports:
+      - 5601:5601
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config
+    depends_on:
+      - elasticsearch-db
+    links:
+      - elasticsearch-db:es
+    networks:
+      - myelastic
+
+networks:
+  myelastic:

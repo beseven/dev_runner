@@ -1,0 +1,3 @@
+#!/bin/bash
+docker-compose -p kibana-int -f docker-compose-kibana.yml down -v
+docker-compose -f docker-compose-kibana.yml build && docker-compose -p kibana-int -f docker-compose-kibana.yml up --build --force-recreate kibana
