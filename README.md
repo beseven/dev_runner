@@ -38,7 +38,7 @@ Quickstart ES:
 
 * Example query for the `Discover` tab (`sexual-health-services`) when you choose the `"contacts.telephone", "serviceDetails", "openingTimes", "address.addressLines", "name", "address.postcode"` as the source:
 ```
-{"bool": {"must": {"multi_match": {"query": "Beech House Surgery", "fields":["name^2","alternativeName"], "operator":"and"}}, "should": [{"match_phrase": {"name": {"query": "Beech House Surgery", "boost":2}}}]}}
+{"bool":{"filter":{"geo_distance":{"distance":"50mi","location.coordinates":{"lat":53.7974369696868,"lon":-1.55288013925145}}},"must":{"match_all":{}}}}
 ```
 
 
