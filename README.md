@@ -29,9 +29,14 @@ Troubleshooting ES:
 * In case you have any issues of compatibility, please check [here](https://www.elastic.co/support/matrix#show_compatibility).
 
 Quickstart ES: 
-* On first use please remember the default port for ES is `9200` and the default index is `profiles`. [Here](https://www.youtube.com/watch?v=mMhnGjp8oOI) is a comprehensive intro.
+* On first use please remember the default port for ES is `9200` and the index is `profiles` or `sexual-health-services`. [Here](https://www.youtube.com/watch?v=mMhnGjp8oOI) is a comprehensive intro.
 * The examples for the `Dev Tools` tab are the same as the ones using [`curl`](https://github.com/nhsuk/profiles-db-elastic#full-text-search-example)
-* Example query for the `Discover` tab when you choose the `"name", "alternativeName", "address.addressLines", "address.postcode", "doctors"` as the source:
+* Example query for the `Discover` tab (`profiles`) when you choose the `"name", "alternativeName", "address.addressLines", "address.postcode", "doctors"` as the source:
+```
+{"bool": {"must": {"multi_match": {"query": "Beech House Surgery", "fields":["name^2","alternativeName"], "operator":"and"}}, "should": [{"match_phrase": {"name": {"query": "Beech House Surgery", "boost":2}}}]}}
+```
+
+* Example query for the `Discover` tab (`sexual-health-services`) when you choose the `"contacts.telephone", "serviceDetails", "openingTimes", "address.addressLines", "name", "address.postcode"` as the source:
 ```
 {"bool": {"must": {"multi_match": {"query": "Beech House Surgery", "fields":["name^2","alternativeName"], "operator":"and"}}, "should": [{"match_phrase": {"name": {"query": "Beech House Surgery", "boost":2}}}]}}
 ```
